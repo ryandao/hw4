@@ -1,0 +1,62 @@
+.navbar-fixed-top {
+  position: relative;
+}
+
+.loading-container {
+  text-align: center;
+}
+
+.loading-container .fa-spinner {
+  font-size: 60px;
+}
+
+.loading-container h6 {
+  font-size: 24px;
+}
+
+footer {
+  margin-bottom: 50px;
+}
+
+img.clickable{
+  cursor:pointer;
+}
+
+.truncate{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: rgb(0,136,206);
+  font-size: 18px;
+}
+
+body {
+  background: url("grey_wash_wall.png");
+  color: #FFF;
+  font-family: 'Open Sans';
+  font-weight: 300;
+  font-size: 1.3em;
+  -webkit-text-stroke: 1px rgba(0,0,0,0.1);
+}
+
+.brand {
+  font-family: 'Cinzel Decorative';
+  font-size: 20px !important;
+  text-align: center;
+}
+
+#header-wrap {
+  position: fixed;
+  height: 200px;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+#wrapper{
+  margin-top: 60px;
+}
+
+.well, .hero-unit {
+  background-color: #353535;
+}

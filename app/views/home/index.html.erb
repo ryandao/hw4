@@ -1,0 +1,154 @@
+<div class="navbar">
+  <div style="position:fixed; box-shadow: 0 5px 15px rgba(0,0,0,0.5) !important;" class="navbar-inner navbar-fixed-top">
+    <div class="container">
+      <a class="brand" href="/#movies">Ramaze Movies: Based on Skull.js</a>
+      <a class="pull-right btn" href="/oauth/new">Login</a>
+    </div>
+  </div>
+</div>
+
+<div id="wrapper" class="container fluid"></div>
+
+<!--Template for movies_index-->
+<script type="text/x-handlebars-template" id="movies">
+  <div class="page-header row-fluid">
+    <h1 class="span10">Now Showing</h1>
+    <a href="#movies/new">
+      <br/>
+      <br/>
+      <button {{action "navigateCreate"}} class="btn btn-primary"> New movies </button>
+    </a>
+  </div>
+
+  <div id="movie-list">
+    {{#boundIf "controller.isLoading"}}
+      <div class="loading-container">
+        <i class="fa fa-spinner fa-spin"></i>
+        <h6>Loading...</h6>
+      </div>
+    {{else}}
+      <div class="row">
+        {{#each "controller.movies"}}
+          <div class="span4">
+            <div class="cell">
+              <a {{action "navigateMovie" item}} href="#"><img src="{{item.img_url}}"></a>`
+              <h4 style="text-align:center">{{bind "item.title"}}</h4>
+              <p></p>
+              <p style="text-align:center">{{item.updated_at}}</p>
+              <br/>
+              <br/>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+
+      <a {{action "previousPage"}} style="color:white" href="#">Previous Page&nbsp&nbsp</a>
+      <a {{action "nextPage"}} style="color:white" href="#">&nbsp&nbspNext Page</a>
+    {{/boundIf}}
+    <br/>
+    <br/>
+  </div>
+</script>
+<!--End movies_index template-->
+
+<!--Template for movies_view-->
+<script type="text/x-handlebars-template" id="movie_view">
+  <div class="row-fluid" id="movie-display">
+    {{#boundIf "controller.isLoadingMovie"}}
+      <div class="loading-container">
+        <i class="fa fa-spinner fa-spin"></i>
+        <h6>Loading...</h6>
+      </div>
+    {{else}}
+      <div class="span4">
+          <img src={{controller.movie.content.img_url}}>
+      </div>
+
+      <div class="span7">
+        <h3>{{controller.movie.content.title}}</h3>
+
+        <p> Created by: {{controller.movie.content.user.username}} </p>
+
+        <button id="delete-movie-btn" class="btn btn-danger">
+          Delete
+        </button>
+      </div>
+    {{/boundIf}}
+  </div>
+
+  <div id="review-list">
+    <h3> Reviews </h3>
+    {{#boundIf "controller.isLoadingReviews"}}
+      <div class="loading-container">
+        <i class="fa fa-spinner fa-spin"></i>
+        <h6>Loading...</h6>
+      </div>
+    {{else}}
+      {{#each "controller.reviews"}}
+        <div class="well">
+          <div class="row-fluid">
+            <div class="span12">
+              <strong> {{item.user.username}} </strong> reviewed on {{item.updated_at}}
+              <span class="label label-success pull-right"> {{item.score}} points</span>
+            </div>
+          </div>
+
+          <div class="row-fluid">
+            <div class="span12">
+              <p> {{item.comment}} </p>
+              <button data-review-id="1" class="btn btn-danger remove-review-btn">Remove</button>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    {{/boundIf}}
+  </div>
+
+  <div id="add-review">
+    <div class="hero-unit">
+    <form id="new-review-form">
+      <textarea class="field span10" id="comment" name="review[comment]" rows="4" placeholder="Leave a review..."/>
+      </textarea>
+      <input type="number" id="score" name="review[score]" placeholder="Give a score from 0 to 100">
+      <p> <button {{action "addReview"}} type="submit" id="add-review-btn" class="btn btn-primary btn-large">
+        Add review
+        {{#boundIf "controller.isAddingReview"}}
+          <i class="fa fa-spinner fa-spin"></i>
+        {{/boundIf}}
+      </button> </p>
+    </form>
+  </div>
+  </div>
+</script>
+<!--End movies_view template-->
+
+<!--movies_new template-->
+<script type="text/x-handlebars-template" id="movies-new">
+  <div class="container">
+  <div class="page-header">
+    <h2>New Movie</h2>
+  </div>
+
+  <form id="new-movie-form" class="simple_form form-horizontal">
+    <div class="inputs">
+      <label for="title">Movie Title</label>
+      <input type="text" id="title" name="movie[title]"><br/>
+      <label for="summary">Summary</label>
+      <input type="text" id="summary" name="movie[summary]"><br/>
+      <label for="img">Add an image URL</label>
+      <input type="file" id="img" name="movie[img]"><br/>
+    </div>
+
+    <div class="actions">
+      <button {{action "submit"}} class="button btn btn-primary" type="submit" id="save_movie" >
+        Save movie
+        <span class="spinner-wrapper hide"><i class="icon-spinner icon-spin"></i></span>
+      </button>
+      <a href="/#movies">
+        Back to list
+      </a>
+    </div>
+  </form>
+</div>
+</script>
+<!--End movies_new template-->
