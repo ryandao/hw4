@@ -2,7 +2,10 @@
   <div style="position:fixed; box-shadow: 0 5px 15px rgba(0,0,0,0.5) !important;" class="navbar-inner navbar-fixed-top">
     <div class="container">
       <a class="brand" href="/#movies">Ramaze Movies: Based on Skull.js</a>
-      <a class="pull-right btn" href="/oauth/new">Login</a>
+      {{#if !App.access_token}}
+        <a class="pull-right btn" href="/oauth/new">Login</a>
+      {{/if}}
+
     </div>
   </div>
 </div>
@@ -69,7 +72,7 @@
 
         <p> Created by: {{controller.movie.content.user.username}} </p>
 
-        <button id="delete-movie-btn" class="btn btn-danger">
+        <button {{action "deleteMovie"}} id="delete-movie-btn" class="btn btn-danger">
           Delete
         </button>
       </div>
@@ -96,7 +99,11 @@
           <div class="row-fluid">
             <div class="span12">
               <p> {{item.comment}} </p>
-              <button data-review-id="1" class="btn btn-danger remove-review-btn">Remove</button>
+              <p><button {{action "deleteReview" item.id}} data-review-id="1" class="btn btn-danger remove-review-btn">Remove
+                {{#boundIf "controller.isAddingReview"}}
+                  <i class="fa fa-spinner fa-spin"></i>
+                {{/boundIf}}
+              </button></p>
             </div>
           </div>
         </div>

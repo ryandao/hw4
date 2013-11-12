@@ -96,9 +96,43 @@ $('document').ready(function() {
     isLoadingMovie: true,
     isLoadingReviews: true,
 
-    addReview: function(e) {
+    deleteMovie: function(e) {
       e.preventDefault();
 
+      if(!App.access_token){
+        window.location = window.location.origin + "/oauth/new";
+        return
+      }
+
+      var _this = this;
+      _this.set('isDeletingMovie',true);
+      $.ajax({
+        url: 'http://cs3213.herokuapp.com/movies/' + this.movie_id + '.json',
+        type: 'DELETE',
+        data: {
+          access_token: App.access_token
+        },
+
+        success: function(data) {
+          _this.set('isDeletingMovie',false);
+          App.router.navigate('movies');
+          alert("Deleted!");
+        },
+
+        error: function() {
+          _this.set('isDeletingMovie',false);
+          alert('You cannot delete this movie!');
+        }
+      })
+    },
+
+    addReview: function(e) {
+      e.preventDefault();
+      console.log(App.access_token);
+      if(!App.access_token){
+        window.location = window.location.origin + "/oauth/new"
+        return
+      }
       var controller = this;
       this.set('isAddingReview', true);
       $('#new-review-form').ajaxSubmit({
@@ -117,6 +151,36 @@ $('document').ready(function() {
           controller.set('isAddingReview', false);
         }
       });
+    },
+
+    deleteReview: function(e, review_id) {
+      e.preventDefault();
+      if(!App.access_token){
+        window.location = window.location.origin + "/oauth/new"
+        return
+      }
+
+      var _this = this;
+      _this.set('isDeletingReview',true);
+      $.ajax({
+        url: 'http://cs3213.herokuapp.com/movies/' + _this.movie_id + '/reviews/' + review_id + '.json',
+        type: 'DELETE',
+        data: {
+          access_token: App.access_token
+        },
+
+        success: function(data) {
+          _this.set('isDeletingReview',false);
+          _this.set('reviews', App.store.find(App.Review));
+        },
+
+        error: function(error) {
+          if (error.status == 401) {
+            alert("You don't have permission to do this");
+          }
+          _this.set('isDeletingReview',false);
+        }
+      })
     }
   });
 
